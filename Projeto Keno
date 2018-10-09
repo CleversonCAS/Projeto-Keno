@@ -1,0 +1,28 @@
+jogador escolhe de 1 a 15 numeros de 1 a 80
+o jogo gera 20 numeros aleatórios de 1 a 80
+O jogador ganha de acordo com quantos numeros ele acertou, baseado na sua aposta
+
+O programa deve ler um arquivo txt*, o jogador deve inserir esse arquivo como argumento da função main(revisar argc argv)
+
+-----------------------------------
+*Ex de arquivo txt:
+1500.0 	(valor real de creditos)
+3 		(numeros de rounds (int))
+21 12 64(numeros apostados)
+-----------------------------------
+
+O programa deve verificar se o arquivo é válido (num apostados estão no limite)
+Se haver numero repetido, ele deve ser ignorado
+O PROGRAMA DEVE CONSIDERAR APENAS OS 15 PRIMEIROS NUMEROS APOSTADOS
+
+O retorno do jogador se baseia em: o numero de numeros apostado e a quantidade de números coicidintes com os sorteados (TABELA NO ARQ DO PROJETO), de acordo com a tabela , o creditos do jogador deve ser multiplicado por aquele número (q ta na tabela)
+
+*Output no arq do projeto
+
+->O programa
+-Deve apresentar pelo menos 1 class(dica no arq do proj)
+-Tentar usar as funções da biblioteca <algorithm>
+-It is very likely that you program will need to sort arrays of data. In this case, you should code your own sorting routine, relying on algorithms such as quick or insertion sort. You may use the
+std::sort or std::qsort but only for comparison purposes, to make sure your sorting routine is working properly.
+
+Ver seção 4,5,6
