@@ -26,3 +26,19 @@ O retorno do jogador se baseia em: o numero de numeros apostado e a quantidade d
 std::sort or std::qsort but only for comparison purposes, to make sure your sorting routine is working properly.
 
 Ver seção 4,5,6
+
+
+
+
+//////////////////////////////////
+bool KenoBet::add_number(int num)//Verifica se o número já está na lista de apostados/////Fazer função para remover numeros repetidos
+{
+	for(int i(0) ;  i < num_apostados.size() ; i++ )
+	{
+		if (num_apostados[i] == num)
+		{
+			return false;
+		}
+	}
+	return true;
+}

@@ -1,1 +1,1 @@
-# Projeto-Keno
+# Keno
