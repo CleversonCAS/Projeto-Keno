@@ -11,6 +11,7 @@
 using std::cout;
 using std::endl;
 using std::vector;
+//using 20 = 20;
 
 int main(){
 
@@ -35,12 +36,13 @@ vector< std::vector< float > > tabela =
 	std::ifstream file("keno.txt");		//abre o arquivo.txt
 	KenoBet Keno;						//Cria o objeto Keno da classe KenoBet
 	int cont = 1;						//Contador para garantir que a info está sendo lida da linha correta
-	int value;							//Valor lido do arq.txt
-	vector<number_type> numeros;		//Vetor com os numeros apostados (CRIAR FUNÇÃO GET E INSERIR PARA A VARIAVEL apostas CRIADA NO .h)
-	vector<number_type> numerosRandoms;	//Vetor com os numeros sorteados (CRIAR FUNÇÃO GET E INSERIR PARA A VARIAVEL apostas CRIADA NO .h)
+	int value,a;							//Valor lido do arq.txt
+	vector<number_type> numeros;		//Vetor com os numeros apostados 
+	vector<number_type> numerosRandoms;	//Vetor com os numeros sorteados 
 	numerosRandoms.reserve(20);			//Reserva o espaço de 20 no vector dos numeros randoms				
 	vector<number_type> matchs;			//Vetor com numeros acertados na rodada
-
+	int aux;
+	float somaAtual,somaTotal,apostaAtual;
 
 	while(true){						//Lendo o arquivo e salvando nas variaveis
 		if(!(file >> value)){
@@ -82,25 +84,48 @@ vector< std::vector< float > > tabela =
 	cout <<"Credito do jogador: " << Keno.getCredito() << endl;
 	cout <<"Numero de rodadas: " << Keno.getRodadas() << endl;
 	cout <<"Numeros apostados: ";
+	ordenaVetor(numeros);
 	imprimeVetor(numeros);//Imprime numero apostados
 
 	imprimePonto();
 
+	apostaAtual = Keno.getCredito()/Keno.getRodadas(); //Aposta atual é o valor apostado em todas as rodadas
+	somaTotal = Keno.getCredito();//Soma total inicializada como o credito inicial
 	for(int i(1) ; i<=Keno.getRodadas() ; i++) //Inicio do jogo
 	{
+		matchs.clear();
 		cout << ">>>Rodada número "<<i<<" de "<<Keno.getRodadas()<< "<<<"<<endl<<endl;
-		cout << ">>>Sua aposta é de: "<<Keno.getCredito()/Keno.getRodadas()<< endl;
+		cout << ">>>Sua aposta é de: "<<apostaAtual<< endl;
 		cout << ">>>Numeros sorteados: ";
 		Keno.geraNumSorteados(numerosRandoms);
-		//imprimeVetor(numerosRandoms);//Imprime Os numeros sorteados//A FUNÇÃO NAO FUNCIONA PARA OS NUMEROS RANDOMS >:C (?)
+		ordenaVetor(numerosRandoms);
+		
+
+
+		//------------------------------------------------------------------------------------------
+		//imprimeVetor(numerosRandoms);//Imprime Os numeros sorteados//A FUNÇÃO NAO FUNCIONA PARA OS NUMEROS RANDOMS	
+		for(int i=0;i<20;i++)
+		{
+				
+			aux=0;
+			for(int j=i+1;j<20;j++)						//Ordena o vetor dos sorteados de modo batata
+			{	
+				if(numerosRandoms[i]>numerosRandoms[j])
+        		{
+        			aux=numerosRandoms[i];
+        			numerosRandoms[i]=numerosRandoms[j];
+        			numerosRandoms[j]=aux;
+        		}
+        	}
+    	}
 		for(int i=0 ; i<20 ; i++)
 		{	
 		cout<<numerosRandoms[i]<<' ';
 		}
-		
+		//----------------------------------------------------------------------------------------------
 
 
-		//Aqui deve haver a atualização do credito por rodada 
+
 
 
 		if (!(Keno.verificaCredito(Keno.getCredito())))		//Garante que se credito = 0 o programa encerra
@@ -108,14 +133,22 @@ vector< std::vector< float > > tabela =
 			cout<<"Vc perdeu TU-DO";
 			return 0;
 		}
-		int a = qtdAcertos( numeros , numerosRandoms, matchs );		//Devolve a qtd de acertos e vetor com os numeros acertados //O contador funiona Mas o vetor com os matchs tá bugado
+		a = qtdAcertos( numeros , numerosRandoms, matchs );		//Devolve a qtd de acertos e vetor com os numeros acertados 
+
+		somaAtual = creditoAtual(Keno.getCredito()/Keno.getRodadas(), tabela[numeros.size()-1][a] , apostaAtual);
+		//somaTotal = creditoSoma(somaAtual,somaTotal);
+		//cout<<"\n\n valor multiplicativo>>>>>>"<<tabela[numeros.size()-1][a]<<"\n\nSoma atual>>>"<<somaAtual<<"\n\n";
+		somaTotal = somaTotal + somaAtual;
+
 		cout <<"\nQuantidade de acertos >>>" <<a <<endl;
 		cout <<"Numeros acertados:  ";
 		imprimeVetor(matchs);
+		cout<<"O valor multiplicativo de sua aposta é de "<< tabela[numeros.size()-1][a]<<endl;
+		cout<<"Nessa rodada voce ganhou  >"<<somaAtual<<endl<<"<  e esta com um montante de >  "<<somaTotal<<"  <"<<endl;
 		imprimePonto();
 	}	
 
-	encerraPrograma(Keno.getCredito(), Keno.getCredito());
+	encerraPrograma(Keno.getCredito(), somaTotal);
 
 
 		

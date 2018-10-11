@@ -10,6 +10,24 @@
 using namespace std;
 
 
+void ordenaVetor(std::vector<number_type> &vet)
+{	
+	int aux;
+	for(int i=0;i<vet.size();i++)
+	{
+		aux=0;
+		for(int j=i+1;j<vet.size();j++)
+		{
+			if(vet[i]>vet[j])
+        	{
+        		aux=vet[i];
+        		vet[i]=vet[j];
+        		vet[j]=aux;
+        	}
+        }
+     }
+}
+
 void encerraPrograma(float creditoInicial, float creditoFinal)
 	{
 		cout<<"		 ---RESUMO---\nValor apostado -> "<<creditoInicial<<"\nValor ganhado no jogo - >"
@@ -33,7 +51,7 @@ void imprimeVetor(std::vector<number_type> &vector1)
 int rand_number(){
 	random_device rd;  
     mt19937 gen(rd()); 
-    uniform_int_distribution<> dis(1, 25);
+    uniform_int_distribution<> dis(1, 80);
 
 	return round(dis(gen));
 }
@@ -72,16 +90,9 @@ void KenoBet::setRodadas(number_type x){
 
 void KenoBet::setApostas(std::vector<number_type> &apostas){}
 
-bool verificaNumero(std::vector<number_type> &testeNum,int tam, number_type valor)
+bool verificaNumero(number_type valor,number_type valor2)
 {	
-	for(number_type i = 0; i < tam; i++)
-	{
-		if (testeNum[i] == valor)
-		{
-			return true;
-		}
-		return false;	
-	}
+	return valor==valor2;
 }
 
 bool KenoBet::verificaCredito(float credito){
@@ -94,16 +105,29 @@ void KenoBet::reset(){
 
 void KenoBet::geraNumSorteados(std::vector<number_type> &vec)
 {	
-	int v;	//Auxiliar que garante que não existirá numero repetido em numero randoms, (atualizar para função essa etapa)
-	vec.reserve(25);
-		//Gera vetor com os numeros sorteados  //fazer função pra isso  //como retornar um vector e utiliza-lo(?)
+	int v;	//Auxiliar que garante que não existirá numero repetido em no Vector, 
+	vec.reserve(20);
+		//Gera vetor com os numeros sorteados 
 		for(number_type j = 0; j < 20; j++)
 		{	
-			vec[j] = rand_number();
-			while(verificaNumero(vec,j,vec[j])) //Deveria garantir que o numero inserido n é repetido
-			{
-				v = rand_number();
-				vec[j] = v;
-			}
+				vec[j] = rand_number();
+				for(int i = 0 ; i<j ; i++)
+				{
+					while(verificaNumero(vec[i],vec[j])) //Deveria garantir que o numero inserido n é repetido
+					{
+						v = rand_number();
+						vec[j] = v;
+						i=0;
+					}
+				}
 		}
+}
+float creditoAtual(float x, int multi , float apostaAtual)
+{	
+	return (apostaAtual * multi) - x;
+}
+
+float creditoSoma(float creditoAtual, float creditoTotal)
+{
+	return creditoTotal + creditoAtual;
 }
