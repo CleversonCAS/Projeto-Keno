@@ -25,10 +25,10 @@ class KenoBet{
 
 
 	public:
-		float getCredito();
-		void setCredito(float x);
-		number_type getRodadas();
-		void setRodadas(number_type x);
+		float getCredito();					//devolve o credito
+		void setCredito(float x);			//recebe o credito
+		number_type getRodadas();			//devolve num de rodadas
+		void setRodadas(number_type x);		//recebe num de rodadas
 		void setApostas(std::vector<number_type> &apostas);//Recebe um vetor com as apostas dadas pelo jogador no arquivo //Atualizar para que devolva apenas as apostas uteis
 
 		bool verificaNumero(std::vector<number_type> &testeNum,int tam, number_type valor);//Verifica se o numero selecionado está no vetor
