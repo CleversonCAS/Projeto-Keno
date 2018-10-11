@@ -10,8 +10,8 @@
 using namespace std;
 
 int rand_number(){
-	random_device rd;  //Will be used to obtain a seed for the random number engine
-    mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+	random_device rd;  
+    mt19937 gen(rd()); 
     uniform_int_distribution<> dis(1, 25);
 
 	return round(dis(gen));
