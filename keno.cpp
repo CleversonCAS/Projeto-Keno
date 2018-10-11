@@ -2,11 +2,11 @@
 #include <vector>
 #include <fstream>
 #include <random>
-#include "keno.h"
+#include "kenoH.h"
 #include <ctime> 
 #include <cstdlib>
 #include <random>
-										//Como passar a tabela sem ser com 225 if/if else(?)
+										
 										
 using std::cout;
 using std::endl;
@@ -14,7 +14,7 @@ using std::vector;
 
 int main(){
 
-vector< std::vector< float > > payout_table =									
+vector< std::vector< float > > tabela =									
 {
 { 0, 3 }, // 1 spot
 { 0, 1, 9 }, // 2 spots
@@ -38,9 +38,10 @@ vector< std::vector< float > > payout_table =
 	int value;							//Valor lido do arq.txt
 	vector<number_type> numeros;		//Vetor com os numeros apostados (CRIAR FUNÇÃO GET E INSERIR PARA A VARIAVEL apostas CRIADA NO .h)
 	vector<number_type> numerosRandoms;	//Vetor com os numeros sorteados (CRIAR FUNÇÃO GET E INSERIR PARA A VARIAVEL apostas CRIADA NO .h)
-	numerosRandoms.reserve(20);			//Reserva o espaço de 20 no vector dos numeros randoms
-	number_type v;						//Auxiliar que garante que não existirá numero repetido em numero randoms, (atualizar para função essa etapa)
-	
+	numerosRandoms.reserve(20);			//Reserva o espaço de 20 no vector dos numeros randoms				
+	vector<number_type> matchs;			//Vetor com numeros acertados na rodada
+
+
 	while(true){						//Lendo o arquivo e salvando nas variaveis
 		if(!(file >> value)){
 			break;
@@ -57,39 +58,46 @@ vector< std::vector< float > > payout_table =
 		}
 	}	
 
+
+
+
 	if (!(Keno.verificaCredito(Keno.getCredito())))
 	{
-		cout<<"Insira um crédito válido";
+		cout<<"Insira Valores válidos";
 		return 0;
 	}
+
+
+
+	cout<< "Acertos 	 Multiplicador do cŕedito"<<endl;		//Imprime a tabela Inicial
+	for(int i=0 ; i<=numeros.size() ; i++)
+	{
+		cout<<i<<" 	 .	 "<<tabela[numeros.size()-1][i]<<endl;
+	}
+
+
 
 	Keno.setApostas(numeros);			//vide .h
 
 	cout <<"Credito do jogador: " << Keno.getCredito() << endl;
 	cout <<"Numero de rodadas: " << Keno.getRodadas() << endl;
 	cout <<"Numeros apostados: ";
-	for(number_type i = 0; i < numeros.size(); i++){
-		cout << numeros[i] << " ";
-	}
-	cout << endl;
+	imprimeVetor(numeros);//Imprime numero apostados
 
-	cout << "Numeros sorteados: " << endl;
-	for(number_type k = 0; k < Keno.getRodadas(); k++)		//Gera vetor com os numeros sorteados  //fazer função pra isso  //como retornar um vector e utiliza-lo(?)
+	imprimePonto();
+
+	for(int i(1) ; i<=Keno.getRodadas() ; i++) //Inicio do jogo
 	{
-		for(number_type j = 0; j < 20; j++)
+		cout << ">>>Rodada número "<<i<<" de "<<Keno.getRodadas()<< "<<<"<<endl<<endl;
+		cout << ">>>Sua aposta é de: "<<Keno.getCredito()/Keno.getRodadas()<< endl;
+		cout << ">>>Numeros sorteados: ";
+		Keno.geraNumSorteados(numerosRandoms);
+		//imprimeVetor(numerosRandoms);//Imprime Os numeros sorteados//A FUNÇÃO NAO FUNCIONA PARA OS NUMEROS RANDOMS >:C (?)
+		for(int i=0 ; i<20 ; i++)
 		{	
-			numerosRandoms[j] = rand_number();
-			while(Keno.verificaNumero(numerosRandoms,j,numerosRandoms[j])) //Deveria garantir que o numero inserido n é repetido
-			{
-				v = rand_number();
-				numerosRandoms[j] = v;
-			}
+		cout<<numerosRandoms[i]<<' ';
 		}
-
-			for(number_type j = 0; j < 20; j++)
-			{
-				cout << numerosRandoms[j] << ' '; 
-			}
+		
 
 
 		//Aqui deve haver a atualização do credito por rodada 
@@ -97,14 +105,17 @@ vector< std::vector< float > > payout_table =
 
 		if (!(Keno.verificaCredito(Keno.getCredito())))		//Garante que se credito = 0 o programa encerra
 		{
-			cout<<"";
+			cout<<"Vc perdeu TU-DO";
 			return 0;
 		}
-		int a = qtdAcertos( numeros , numerosRandoms );		//Devolve a qtd de acertos
-		cout <<"QTD DE ACERTOS::::" <<a <<endl;
-		
+		int a = qtdAcertos( numeros , numerosRandoms, matchs );		//Devolve a qtd de acertos e vetor com os numeros acertados //O contador funiona Mas o vetor com os matchs tá bugado
+		cout <<"\nQuantidade de acertos >>>" <<a <<endl;
+		cout <<"Numeros acertados:  ";
+		imprimeVetor(matchs);
+		imprimePonto();
+	}	
 
-		}
+	encerraPrograma(Keno.getCredito(), Keno.getCredito());
 
 
 		

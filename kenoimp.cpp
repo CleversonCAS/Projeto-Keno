@@ -2,12 +2,33 @@
 #include <vector>
 #include <fstream>
 #include <random>
-#include "keno.h"
+#include "kenoH.h"
 #include <ctime> 
 #include <cstdlib>
 #include <random>
 
 using namespace std;
+
+
+void encerraPrograma(float creditoInicial, float creditoFinal)
+	{
+		cout<<"		 ---RESUMO---\nValor apostado -> "<<creditoInicial<<"\nValor ganhado no jogo - >"
+			<<creditoFinal-creditoInicial<<"\nEstais saindo da mesa com -> "<<creditoFinal<<endl;
+	}
+
+void imprimePonto()
+{
+	cout<<"\n\n-----------------------------------------------------------------------------\n\n";
+}
+
+void imprimeVetor(std::vector<number_type> &vector1)
+{
+	for (int i = 0; i < vector1.size(); i++)
+	{
+		cout<<vector1[i]<<' ';
+	}
+	cout<<endl;
+}
 
 int rand_number(){
 	random_device rd;  
@@ -17,7 +38,7 @@ int rand_number(){
 	return round(dis(gen));
 }
 
-int qtdAcertos(std::vector<number_type> &numapostados , std::vector<number_type> &numsorteados )
+int qtdAcertos(std::vector<number_type> &numapostados , std::vector<number_type> &numsorteados,std::vector<number_type> &matchs)
 {
 	int acertos=0;
 	for(number_type k=0 ; k <= numapostados.size() ; k++)
@@ -26,6 +47,7 @@ int qtdAcertos(std::vector<number_type> &numapostados , std::vector<number_type>
 		{
 			if(numapostados[k] == numsorteados[l])
 			{
+				matchs.push_back(numapostados[k]);
 				acertos++;
 			}
 		}
@@ -50,7 +72,7 @@ void KenoBet::setRodadas(number_type x){
 
 void KenoBet::setApostas(std::vector<number_type> &apostas){}
 
-bool KenoBet::verificaNumero(std::vector<number_type> &testeNum,int tam, number_type valor)
+bool verificaNumero(std::vector<number_type> &testeNum,int tam, number_type valor)
 {	
 	for(number_type i = 0; i < tam; i++)
 	{
@@ -68,4 +90,20 @@ bool KenoBet::verificaCredito(float credito){
 
 void KenoBet::reset(){
 	credito = 0;
+}
+
+void KenoBet::geraNumSorteados(std::vector<number_type> &vec)
+{	
+	int v;	//Auxiliar que garante que não existirá numero repetido em numero randoms, (atualizar para função essa etapa)
+	vec.reserve(25);
+		//Gera vetor com os numeros sorteados  //fazer função pra isso  //como retornar um vector e utiliza-lo(?)
+		for(number_type j = 0; j < 20; j++)
+		{	
+			vec[j] = rand_number();
+			while(verificaNumero(vec,j,vec[j])) //Deveria garantir que o numero inserido n é repetido
+			{
+				v = rand_number();
+				vec[j] = v;
+			}
+		}
 }
