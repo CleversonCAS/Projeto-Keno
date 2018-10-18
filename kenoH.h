@@ -1,3 +1,4 @@
+//ALUNOS:: CLEVERSON SOUZA , SAID OLIVEIRA
 #ifndef KENOH_H
 #define KENOH_H
 #include <vector>
@@ -24,7 +25,7 @@ void imprimeVetor(std::vector<number_type> &vector);
 
 void imprimePonto();
 
-float creditoAtual(float x, int multi , float apostaAtual);//recebe o credito atual e atualiza de acordo com a tabela
+float creditoAtual(float x, float multi , float apostaAtual);//recebe o credito atual e atualiza de acordo com a tabela
 
 float creditoSoma(float creditoAtual, float creditoDaRodada);	//recebe o credito atual e e o inicial e faz a soma
 

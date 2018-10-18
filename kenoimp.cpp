@@ -1,3 +1,4 @@
+//ALUNOS:: CLEVERSON SOUZA , SAID OLIVEIRA
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -30,8 +31,17 @@ void ordenaVetor(std::vector<number_type> &vet)
 
 void encerraPrograma(float creditoInicial, float creditoFinal)
 	{
-		cout<<"		 ---RESUMO---\nValor apostado -> "<<creditoInicial<<"\nValor ganhado no jogo - >"
-			<<creditoFinal-creditoInicial<<"\nEstais saindo da mesa com -> "<<creditoFinal<<endl;
+		float resumo = creditoFinal-creditoInicial; 
+		if (resumo >= 0)
+		{
+			cout<<"		 ---RESUMO---\nValor apostado -> "<<creditoInicial<<"\nValor ganhado no jogo - >"
+			<<resumo<<"\nEstais saindo da mesa com -> "<<creditoFinal<<endl;
+		}
+		if (resumo <= 0)
+		{
+			cout<<"		 ---RESUMO---\nValor apostado -> "<<creditoInicial<<"\nValor perdido no jogo - >"
+			<<resumo<<"\nEstais saindo da mesa com -> "<<creditoFinal<<endl;
+		}
 	}
 
 void imprimePonto()
@@ -122,7 +132,7 @@ void KenoBet::geraNumSorteados(std::vector<number_type> &vec)
 				}
 		}
 }
-float creditoAtual(float x, int multi , float apostaAtual)
+float creditoAtual(float x, float multi , float apostaAtual)
 {	
 	return (apostaAtual * multi) - x;
 }
